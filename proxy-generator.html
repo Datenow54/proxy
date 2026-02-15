@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>বিশ্ব প্রক্সি জেনারেটর - All Countries & Cities</title>
+    <title>প্রক্সি জেনারেটর - Proxy Generator Tool</title>
     <style>
         * {
             margin: 0;
@@ -13,360 +13,265 @@
         
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #141e30 0%, #2c5364 100%);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             padding: 20px;
         }
         
         .container {
-            max-width: 1200px;
-            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 600px;
+            width: 100%;
         }
         
         h1 {
             text-align: center;
-            color: white;
+            color: #333;
             margin-bottom: 10px;
-            font-size: 36px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            font-size: 28px;
         }
         
         .subtitle {
             text-align: center;
-            color: #e0e0e0;
+            color: #666;
             margin-bottom: 30px;
-            font-size: 18px;
+            font-size: 16px;
         }
         
         .base-info {
-            background: rgba(255,255,255,0.95);
-            border-radius: 15px;
-            padding: 20px;
+            background: #f5f5f5;
+            border-radius: 10px;
+            padding: 15px;
             margin-bottom: 25px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
         }
         
         .base-info h3 {
-            color: #333;
-            margin-bottom: 15px;
-            font-size: 20px;
-            border-bottom: 2px solid #667eea;
-            padding-bottom: 8px;
-        }
-        
-        .info-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
+            color: #555;
+            margin-bottom: 10px;
+            font-size: 18px;
         }
         
         .info-item {
-            background: #f0f7ff;
-            padding: 12px;
-            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
         }
         
         .info-label {
             font-weight: bold;
-            color: #555;
-            display: block;
-            margin-bottom: 5px;
-            font-size: 14px;
+            width: 80px;
+            color: #444;
         }
         
         .info-value {
             color: #0066cc;
-            font-family: monospace;
-            font-size: 16px;
-            background: white;
-            padding: 5px 10px;
+            background: #e8f0fe;
+            padding: 4px 10px;
             border-radius: 5px;
-            display: inline-block;
+            font-family: monospace;
         }
         
-        .main-panel {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            margin-bottom: 25px;
+        .form-group {
+            margin-bottom: 20px;
         }
         
-        .panel {
-            background: rgba(255,255,255,0.95);
-            border-radius: 15px;
-            padding: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-        }
-        
-        .panel h3 {
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
             color: #333;
-            margin-bottom: 15px;
-            font-size: 20px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
         }
         
-        .country-list, .city-list {
-            max-height: 400px;
-            overflow-y: auto;
-            border: 1px solid #e0e0e0;
-            border-radius: 10px;
-            padding: 10px;
-        }
-        
-        .country-item, .city-item {
-            padding: 10px 12px;
-            margin: 5px 0;
-            background: #f8f9fa;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .country-item:hover, .city-item:hover {
-            background: #e3f2fd;
-            transform: translateX(5px);
-        }
-        
-        .country-item.selected, .city-item.selected {
-            background: #667eea;
-            color: white;
-        }
-        
-        .country-item.selected .city-count, .city-item.selected .city-count {
-            background: white;
-            color: #667eea;
-        }
-        
-        .city-count {
-            background: #e0e0e0;
-            padding: 2px 8px;
-            border-radius: 12px;
-            font-size: 12px;
-            margin-left: auto;
-        }
-        
-        .flag {
-            font-size: 20px;
-        }
-        
-        .search-box {
-            margin-bottom: 15px;
-        }
-        
-        .search-box input {
+        select, input {
             width: 100%;
             padding: 12px 15px;
             border: 2px solid #e0e0e0;
             border-radius: 10px;
             font-size: 15px;
+            transition: all 0.3s;
+        }
+        
+        select:focus, input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102,126,234,0.1);
+        }
+        
+        .city-input-group {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .city-input-group select {
+            flex: 2;
+        }
+        
+        .city-input-group input {
+            flex: 1;
         }
         
         .generated-box {
-            background: rgba(255,255,255,0.95);
-            border-radius: 15px;
-            padding: 25px;
-            margin-top: 20px;
-            border: 3px solid #667eea;
+            margin-top: 25px;
+            background: #f0f7ff;
+            border: 2px solid #667eea;
+            border-radius: 10px;
+            padding: 20px;
         }
         
         .generated-box h3 {
             color: #333;
-            margin-bottom: 15px;
-            font-size: 22px;
+            margin-bottom: 12px;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
         }
         
         .proxy-string {
-            background: #1a1a1a;
-            color: #00ff00;
-            padding: 20px;
-            border-radius: 10px;
-            font-family: monospace;
-            font-size: 18px;
-            word-break: break-all;
-            margin-bottom: 15px;
-            border: 1px solid #333;
-        }
-        
-        .button-group {
-            display: flex;
-            gap: 10px;
-        }
-        
-        .btn {
-            flex: 1;
+            background: white;
             padding: 15px;
+            border-radius: 8px;
+            font-family: monospace;
+            font-size: 16px;
+            word-break: break-all;
+            border: 1px solid #ddd;
+            margin-bottom: 12px;
+            color: #0066cc;
+        }
+        
+        .copy-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
             border: none;
+            padding: 12px 25px;
             border-radius: 10px;
             font-size: 16px;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
+            width: 100%;
+            transition: transform 0.2s;
         }
         
-        .btn-primary {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-        }
-        
-        .btn-success {
-            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
-            color: white;
-        }
-        
-        .btn-info {
-            background: linear-gradient(135deg, #17a2b8 0%, #009688 100%);
-            color: white;
-        }
-        
-        .btn:hover {
+        .copy-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            box-shadow: 0 5px 15px rgba(102,126,234,0.4);
         }
         
-        .quick-presets {
-            background: rgba(255,255,255,0.95);
-            border-radius: 15px;
-            padding: 20px;
+        .footer {
             margin-top: 20px;
-        }
-        
-        .preset-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-            gap: 10px;
-            margin-top: 15px;
-        }
-        
-        .preset-btn {
-            background: #f0f7ff;
-            border: 1px solid #667eea;
-            padding: 10px;
-            border-radius: 8px;
-            cursor: pointer;
             text-align: center;
-            transition: all 0.2s;
+            color: #888;
             font-size: 14px;
         }
         
-        .preset-btn:hover {
-            background: #667eea;
-            color: white;
-        }
-        
-        .recent-list {
-            margin-top: 20px;
-            padding: 15px;
-            background: #f8f9fa;
-            border-radius: 10px;
-        }
-        
-        .recent-item {
+        .preset-badge {
             display: inline-block;
-            background: white;
+            background: #e8f0fe;
             padding: 5px 12px;
-            margin: 3px;
             border-radius: 20px;
+            margin: 5px 5px 0 0;
             font-size: 13px;
-            border: 1px solid #ddd;
+            color: #444;
             cursor: pointer;
+            transition: all 0.2s;
         }
         
-        .recent-item:hover {
+        .preset-badge:hover {
             background: #667eea;
             color: white;
-        }
-        
-        @media (max-width: 768px) {
-            .main-panel {
-                grid-template-columns: 1fr;
-            }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>🌍 বিশ্ব প্রক্সি জেনারেটর</h1>
-        <p class="subtitle">সমস্ত দেশ ও শহরের জন্য - All Countries & Cities Proxy Generator</p>
+        <h1>🌐 প্রক্সি জেনারেটর টুল</h1>
+        <p class="subtitle">Proxy Generator Tool - Country & City Change</p>
         
         <div class="base-info">
-            <h3>📌 স্থির তথ্য (Fixed Base)</h3>
-            <div class="info-grid">
-                <div class="info-item">
-                    <span class="info-label">হোস্ট (Host)</span>
-                    <span class="info-value">as.b78718267611dabe.abcproxy.vip</span>
-                </div>
-                <div class="info-item">
-                    <span class="info-label">পোর্ট (Port)</span>
-                    <span class="info-value">4950</span>
-                </div>
-                <div class="info-item">
-                    <span class="info-label">পাসওয়ার্ড</span>
-                    <span class="info-value">HuMynQlETp4</span>
-                </div>
-                <div class="info-item">
-                    <span class="info-label">ইউজার প্রিফিক্স</span>
-                    <span class="info-value">Sajib838eL-zone-</span>
-                </div>
+            <h3>📌 বেস তথ্য (স্থির থাকবে):</h3>
+            <div class="info-item">
+                <span class="info-label">Host:</span>
+                <span class="info-value">as.b78718267611dabe.abcproxy.vip</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">Port:</span>
+                <span class="info-value">4950</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">Password:</span>
+                <span class="info-value">HuMynQlETp4</span>
             </div>
         </div>
         
-        <div class="main-panel">
-            <!-- Country Panel -->
-            <div class="panel">
-                <h3>🌎 দেশ নির্বাচন (Select Country)</h3>
-                <div class="search-box">
-                    <input type="text" id="countrySearch" placeholder="🔍 দেশ খুঁজুন... (Search country)">
-                </div>
-                <div class="country-list" id="countryList"></div>
-            </div>
-            
-            <!-- City Panel -->
-            <div class="panel">
-                <h3>🏙️ শহর নির্বাচন (Select City)</h3>
-                <div class="search-box">
-                    <input type="text" id="citySearch" placeholder="🔍 শহর খুঁজুন... (Search city)">
-                </div>
-                <div class="city-list" id="cityList">
-                    <div class="city-item selected" onclick="selectCity('ci')">
-                        <span>🌆</span> সমস্ত শহর (All Cities)
-                        <span class="city-count">ALL</span>
-                    </div>
-                </div>
+        <div class="form-group">
+            <label>🌍 দেশ নির্বাচন করুন (Select Country):</label>
+            <select id="countrySelect">
+                <option value="usa">🇺🇸 USA (ইউএসএ)</option>
+                <option value="abc" selected>🇩🇪 Germany (জার্মানি)</option>
+                <option value="uk">🇬🇧 United Kingdom (ইউকে)</option>
+                <option value="ca">🇨🇦 Canada (কানাডা)</option>
+                <option value="fr">🇫🇷 France (ফ্রান্স)</option>
+                <option value="nl">🇳🇱 Netherlands (নেদারল্যান্ডস)</option>
+                <option value="au">🇦🇺 Australia (অস্ট্রেলিয়া)</option>
+                <option value="in">🇮🇳 India (ভারত)</option>
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label>🏙️ শহর নির্বাচন করুন (Select City):</label>
+            <div class="city-input-group">
+                <select id="citySelect">
+                    <option value="ci">🌆 All Cities (সমস্ত শহর)</option>
+                    <option value="newyork">🗽 New York</option>
+                    <option value="losangeles">🌴 Los Angeles</option>
+                    <option value="chicago">🌆 Chicago</option>
+                    <option value="houston">🚀 Houston</option>
+                    <option value="miami">☀️ Miami</option>
+                    <option value="dallas">🤠 Dallas</option>
+                    <option value="seattle">💻 Seattle</option>
+                    <option value="boston">🍺 Boston</option>
+                    <option value="sanfrancisco">🌉 San Francisco</option>
+                    <option value="washingtondc">🏛️ Washington DC</option>
+                    <option value="lasvegas">🎰 Las Vegas</option>
+                    <option value="orlando">🍊 Orlando</option>
+                    <option value="phoenix">🏜️ Phoenix</option>
+                    <option value="denver">⛰️ Denver</option>
+                    <option value="atlanta">🍑 Atlanta</option>
+                    <option value="philadelphia">🏛️ Philadelphia</option>
+                    <option value="austin">🎸 Austin</option>
+                    <option value="sandiego">🏝️ San Diego</option>
+                </select>
+                <input type="text" id="customCity" placeholder="অথবা নিজের শহর লিখুন">
             </div>
         </div>
         
-        <!-- Generated Proxy -->
+        <div class="form-group">
+            <label>🔧 ইউজারনেম প্রিফিক্স (স্থির):</label>
+            <input type="text" id="prefixInput" value="Sajib838eL-zone-" readonly>
+        </div>
+        
         <div class="generated-box">
-            <h3>🔑 জেনারেটেড প্রক্সি (Generated Proxy)</h3>
+            <h3>🔑 জেনারেটেড প্রক্সি (Generated Proxy):</h3>
             <div class="proxy-string" id="proxyOutput">as.b78718267611dabe.abcproxy.vip:4950:Sajib838eL-zone-abc-region-ci:HuMynQlETp4</div>
-            <div class="button-group">
-                <button class="btn btn-primary" onclick="copyProxy()">📋 কপি করুন (Copy)</button>
-                <button class="btn btn-success" onclick="openInNewTab()">🌐 ব্রাউজারে খুলুন</button>
-                <button class="btn btn-info" onclick="saveToFavorites()">⭐ ফেভারিটে যোগ করুন</button>
+            <button class="copy-btn" onclick="copyProxy()">📋 কপি করুন (Copy)</button>
+        </div>
+        
+        <div class="footer">
+            <p>দ্রুত সিলেক্ট করুন:</p>
+            <div>
+                <span class="preset-badge" onclick="setPreset('usa', 'ci')">🇺🇸 USA All City</span>
+                <span class="preset-badge" onclick="setPreset('usa', 'newyork')">🇺🇸 New York</span>
+                <span class="preset-badge" onclick="setPreset('usa', 'losangeles')">🇺🇸 Los Angeles</span>
+                <span class="preset-badge" onclick="setPreset('usa', 'miami')">🇺🇸 Miami</span>
+                <span class="preset-badge" onclick="setPreset('usa', 'lasvegas')">🇺🇸 Las Vegas</span>
+                <span class="preset-badge" onclick="setPreset('abc', 'ci')">🇩🇪 Germany All City</span>
+                <span class="preset-badge" onclick="setPreset('uk', 'ci')">🇬🇧 UK All City</span>
             </div>
-        </div>
-        
-        <!-- Quick Presets -->
-        <div class="quick-presets">
-            <h3>⚡ দ্রুত নির্বাচন (Quick Presets)</h3>
-            <div class="preset-grid" id="presetGrid"></div>
-        </div>
-        
-        <!-- Recent Proxies -->
-        <div class="recent-list" id="recentList">
-            <strong>📜 ইতিহাস (Recent):</strong>
         </div>
     </div>
     
@@ -377,280 +282,70 @@
         const BASE_PASSWORD = "HuMynQlETp4";
         const BASE_USERNAME_PREFIX = "Sajib838eL-zone-";
         
-        // All countries data with flags and codes
-        const countries = [
-            { name: "USA", code: "usa", flag: "🇺🇸", cities: 150 },
-            { name: "Germany", code: "abc", flag: "🇩🇪", cities: 80 },
-            { name: "United Kingdom", code: "uk", flag: "🇬🇧", cities: 70 },
-            { name: "Canada", code: "ca", flag: "🇨🇦", cities: 60 },
-            { name: "France", code: "fr", flag: "🇫🇷", cities: 50 },
-            { name: "Netherlands", code: "nl", flag: "🇳🇱", cities: 30 },
-            { name: "Australia", code: "au", flag: "🇦🇺", cities: 40 },
-            { name: "India", code: "in", flag: "🇮🇳", cities: 100 },
-            { name: "Brazil", code: "br", flag: "🇧🇷", cities: 70 },
-            { name: "Japan", code: "jp", flag: "🇯🇵", cities: 60 },
-            { name: "South Korea", code: "kr", flag: "🇰🇷", cities: 40 },
-            { name: "Singapore", code: "sg", flag: "🇸🇬", cities: 10 },
-            { name: "Italy", code: "it", flag: "🇮🇹", cities: 50 },
-            { name: "Spain", code: "es", flag: "🇪🇸", cities: 45 },
-            { name: "Mexico", code: "mx", flag: "🇲🇽", cities: 55 },
-            { name: "Russia", code: "ru", flag: "🇷🇺", cities: 80 },
-            { name: "China", code: "cn", flag: "🇨🇳", cities: 120 },
-            { name: "South Africa", code: "za", flag: "🇿🇦", cities: 30 },
-            { name: "Egypt", code: "eg", flag: "🇪🇬", cities: 25 },
-            { name: "Turkey", code: "tr", flag: "🇹🇷", cities: 40 },
-            { name: "UAE", code: "ae", flag: "🇦🇪", cities: 15 },
-            { name: "Saudi Arabia", code: "sa", flag: "🇸🇦", cities: 20 },
-            { name: "Argentina", code: "ar", flag: "🇦🇷", cities: 35 },
-            { name: "Chile", code: "cl", flag: "🇨🇱", cities: 25 },
-            { name: "Colombia", code: "co", flag: "🇨🇴", cities: 30 },
-            { name: "Peru", code: "pe", flag: "🇵🇪", cities: 20 },
-            { name: "Venezuela", code: "ve", flag: "🇻🇪", cities: 20 },
-            { name: "Nigeria", code: "ng", flag: "🇳🇬", cities: 35 },
-            { name: "Kenya", code: "ke", flag: "🇰🇪", cities: 20 },
-            { name: "Morocco", code: "ma", flag: "🇲🇦", cities: 25 },
-            { name: "Thailand", code: "th", flag: "🇹🇭", cities: 30 },
-            { name: "Vietnam", code: "vn", flag: "🇻🇳", cities: 35 },
-            { name: "Malaysia", code: "my", flag: "🇲🇾", cities: 25 },
-            { name: "Indonesia", code: "id", flag: "🇮🇩", cities: 45 },
-            { name: "Philippines", code: "ph", flag: "🇵🇭", cities: 40 },
-            { name: "Pakistan", code: "pk", flag: "🇵🇰", cities: 50 },
-            { name: "Bangladesh", code: "bd", flag: "🇧🇩", cities: 40 },
-            { name: "Sri Lanka", code: "lk", flag: "🇱🇰", cities: 20 },
-            { name: "Nepal", code: "np", flag: "🇳🇵", cities: 15 },
-            { name: "Afghanistan", code: "af", flag: "🇦🇫", cities: 20 },
-            { name: "Iran", code: "ir", flag: "🇮🇷", cities: 40 },
-            { name: "Iraq", code: "iq", flag: "🇮🇶", cities: 25 },
-            { name: "Israel", code: "il", flag: "🇮🇱", cities: 15 },
-            { name: "Jordan", code: "jo", flag: "🇯🇴", cities: 15 },
-            { name: "Lebanon", code: "lb", flag: "🇱🇧", cities: 10 },
-            { name: "Syria", code: "sy", flag: "🇸🇾", cities: 15 },
-            { name: "Kuwait", code: "kw", flag: "🇰🇼", cities: 8 },
-            { name: "Qatar", code: "qa", flag: "🇶🇦", cities: 5 },
-            { name: "Oman", code: "om", flag: "🇴🇲", cities: 8 },
-            { name: "Yemen", code: "ye", flag: "🇾🇪", cities: 15 },
-            { name: "Kazakhstan", code: "kz", flag: "🇰🇿", cities: 25 },
-            { name: "Uzbekistan", code: "uz", flag: "🇺🇿", cities: 20 },
-            { name: "Ukraine", code: "ua", flag: "🇺🇦", cities: 40 },
-            { name: "Poland", code: "pl", flag: "🇵🇱", cities: 35 },
-            { name: "Czech Republic", code: "cz", flag: "🇨🇿", cities: 25 },
-            { name: "Hungary", code: "hu", flag: "🇭🇺", cities: 20 },
-            { name: "Romania", code: "ro", flag: "🇷🇴", cities: 30 },
-            { name: "Bulgaria", code: "bg", flag: "🇧🇬", cities: 20 },
-            { name: "Greece", code: "gr", flag: "🇬🇷", cities: 25 },
-            { name: "Portugal", code: "pt", flag: "🇵🇹", cities: 20 },
-            { name: "Sweden", code: "se", flag: "🇸🇪", cities: 25 },
-            { name: "Norway", code: "no", flag: "🇳🇴", cities: 20 },
-            { name: "Denmark", code: "dk", flag: "🇩🇰", cities: 15 },
-            { name: "Finland", code: "fi", flag: "🇫🇮", cities: 15 },
-            { name: "Iceland", code: "is", flag: "🇮🇸", cities: 5 },
-            { name: "Ireland", code: "ie", flag: "🇮🇪", cities: 15 },
-            { name: "Switzerland", code: "ch", flag: "🇨🇭", cities: 15 },
-            { name: "Austria", code: "at", flag: "🇦🇹", cities: 15 },
-            { name: "Belgium", code: "be", flag: "🇧🇪", cities: 15 },
-            { name: "Luxembourg", code: "lu", flag: "🇱🇺", cities: 3 }
-        ];
+        // Get DOM elements
+        const countrySelect = document.getElementById('countrySelect');
+        const citySelect = document.getElementById('citySelect');
+        const customCity = document.getElementById('customCity');
+        const prefixInput = document.getElementById('prefixInput');
+        const proxyOutput = document.getElementById('proxyOutput');
         
-        // Cities data for each country
-        const citiesByCountry = {
-            usa: ["newyork", "losangeles", "chicago", "houston", "miami", "dallas", "seattle", "boston", "sanfrancisco", "washingtondc", "lasvegas", "orlando", "phoenix", "denver", "atlanta", "philadelphia", "austin", "sandiego", "detroit", "portland", "stlouis", "baltimore", "cleveland", "indianapolis", "columbus", "charlotte", "memphis", "milwaukee", "nashville", "neworleans", "tampa", "minneapolis", "kansascity", "sacramento", "pittsburgh", "cincinnati", "sanantonio", "raleigh", "omaha", "richmond", "buffalo", "hartford", "birmingham", "rochester", "albany", "providence", "saltlakecity", "albuquerque", "tucson", "fresno"],
+        // Update proxy when any selection changes
+        function updateProxy() {
+            const country = countrySelect.value;
+            let city = '';
             
-            abc: ["berlin", "frankfurt", "munich", "hamburg", "cologne", "dusseldorf", "stuttgart", "dortmund", "essen", "leipzig", "bremen", "dresden", "hanover", "nuremberg", "rostock", "bonn", "mannheim", "karlsruhe", "wiesbaden", "munster", "augsburg", "aachen", "bielefeld", "chemnitz", "halle", "magdeburg", "freiburg", "mainz", "kassel", "lubeck", "potsdam", "saarbrucken", "ulm", "bottrop", "remscheid", "heidelberg", "darmstadt", "wuppertal", "erfurt", "oberhausen"],
-            
-            uk: ["london", "manchester", "birmingham", "leeds", "glasgow", "sheffield", "bradford", "edinburgh", "liverpool", "bristol", "cardiff", "belfast", "newcastle", "southampton", "portsmouth", "nottingham", "leicester", "coventry", "hull", "stoke", "wolverhampton", "plymouth", "derby", "swansea", "aberdeen", "dundee", "brighton", "oxford", "cambridge", "york", "norwich", "exeter", "chester", "bath", "lincoln", "salisbury", "durham", "winchester", "canterbury", "chichester"],
-            
-            ca: ["toronto", "vancouver", "montreal", "calgary", "edmonton", "ottawa", "winnipeg", "quebec", "hamilton", "kitchener", "london", "halifax", "victoria", "windsor", "saskatoon", "regina", "stjohns", "charlottetown", "yellowknife", "whitehorse", "iqaluit", "sherbrooke", "troisrivieres", "kingston", "guelph", "barrie", "thunderbay", "sudbury", "saultstmarie", "northbay"],
-            
-            fr: ["paris", "marseille", "lyon", "toulouse", "nice", "nantes", "strasbourg", "montpellier", "bordeaux", "lille", "rennes", "reims", "lehavre", "saintetienne", "toulon", "grenoble", "dijon", "angers", "nimes", "villeurbanne", "lemans", "brest", "orleans", "amiens", "limoges", "clermontferrand", "besancon", "perpignan", "avignon", "rouen"],
-            
-            nl: ["amsterdam", "rotterdam", "thehague", "utrecht", "eindhoven", "tilburg", "groningen", "almere", "breda", "nijmegen", "enschede", "haarlem", "arnhem", "zandvoort", "maastricht", "leiden", "delft", "dordrecht", "zwolle", "amersfoort", "alkmaar", "venlo", "oss", "gouda", "schiedam", "spijkenisse", "hilversum", "helmond", "sittard", "bergenopzoom"],
-            
-            au: ["sydney", "melbourne", "brisbane", "perth", "adelaide", "goldcoast", "canberra", "newcastle", "wollongong", "logancity", "geelong", "hobart", "townsville", "cairns", "darwin", "toowoomba", "ballarat", "bendigo", "launceston", "albury", "maitland", "rockhampton", "bundaberg", "mackay", "wagga", "herveybay", "mildura", "shepparton", "portmacquarie", "tamworth"]
-        };
-        
-        // State variables
-        let selectedCountry = "abc";
-        let selectedCity = "ci";
-        let recentProxies = JSON.parse(localStorage.getItem('recentProxies')) || [];
-        
-        // Initialize
-        function init() {
-            renderCountryList();
-            renderCityList();
-            renderPresets();
-            renderRecentList();
-            updateProxy();
-        }
-        
-        // Render country list
-        function renderCountryList() {
-            const searchTerm = document.getElementById('countrySearch').value.toLowerCase();
-            const filtered = countries.filter(c => 
-                c.name.toLowerCase().includes(searchTerm) || 
-                c.code.toLowerCase().includes(searchTerm)
-            );
-            
-            const html = filtered.map(c => `
-                <div class="country-item ${selectedCountry === c.code ? 'selected' : ''}" onclick="selectCountry('${c.code}')">
-                    <span class="flag">${c.flag}</span>
-                    <span>${c.name}</span>
-                    <span class="city-count">${c.cities} শহর</span>
-                </div>
-            `).join('');
-            
-            document.getElementById('countryList').innerHTML = html;
-        }
-        
-        // Render city list
-        function renderCityList() {
-            const cities = citiesByCountry[selectedCountry] || [];
-            const searchTerm = document.getElementById('citySearch').value.toLowerCase();
-            
-            let html = `
-                <div class="city-item ${selectedCity === 'ci' ? 'selected' : ''}" onclick="selectCity('ci')">
-                    <span>🌆</span> সমস্ত শহর (All Cities)
-                    <span class="city-count">ALL</span>
-                </div>
-            `;
-            
-            const filtered = cities.filter(c => c.includes(searchTerm));
-            
-            filtered.forEach(city => {
-                const cityName = city.charAt(0).toUpperCase() + city.slice(1).replace(/([A-Z])/g, ' $1').trim();
-                html += `
-                    <div class="city-item ${selectedCity === city ? 'selected' : ''}" onclick="selectCity('${city}')">
-                        <span>🏙️</span> ${cityName}
-                        <span class="city-count">✓</span>
-                    </div>
-                `;
-            });
-            
-            document.getElementById('cityList').innerHTML = html;
-        }
-        
-        // Render quick presets
-        function renderPresets() {
-            const presets = [
-                { country: "usa", city: "ci", name: "🇺🇸 USA All City" },
-                { country: "usa", city: "newyork", name: "🇺🇸 New York" },
-                { country: "usa", city: "losangeles", name: "🇺🇸 Los Angeles" },
-                { country: "usa", city: "miami", name: "🇺🇸 Miami" },
-                { country: "usa", city: "lasvegas", name: "🇺🇸 Las Vegas" },
-                { country: "abc", city: "ci", name: "🇩🇪 Germany All City" },
-                { country: "abc", city: "berlin", name: "🇩🇪 Berlin" },
-                { country: "abc", city: "frankfurt", name: "🇩🇪 Frankfurt" },
-                { country: "uk", city: "ci", name: "🇬🇧 UK All City" },
-                { country: "uk", city: "london", name: "🇬🇧 London" },
-                { country: "ca", city: "ci", name: "🇨🇦 Canada All City" },
-                { country: "ca", city: "toronto", name: "🇨🇦 Toronto" },
-                { country: "fr", city: "ci", name: "🇫🇷 France All City" },
-                { country: "fr", city: "paris", name: "🇫🇷 Paris" },
-                { country: "nl", city: "ci", name: "🇳🇱 Netherlands All City" },
-                { country: "nl", city: "amsterdam", name: "🇳🇱 Amsterdam" },
-                { country: "au", city: "ci", name: "🇦🇺 Australia All City" },
-                { country: "au", city: "sydney", name: "🇦🇺 Sydney" },
-                { country: "in", city: "ci", name: "🇮🇳 India All City" },
-                { country: "in", city: "mumbai", name: "🇮🇳 Mumbai" }
-            ];
-            
-            const html = presets.map(p => `
-                <div class="preset-btn" onclick="setPreset('${p.country}', '${p.city}')">${p.name}</div>
-            `).join('');
-            
-            document.getElementById('presetGrid').innerHTML = html;
-        }
-        
-        // Render recent proxies
-        function renderRecentList() {
-            const container = document.getElementById('recentList');
-            if (recentProxies.length === 0) {
-                container.innerHTML = '<strong>📜 ইতিহাস (Recent):</strong> <span style="color: #999; margin-left: 10px;">কোনো ইতিহাস নেই</span>';
-                return;
+            if (customCity.value.trim() !== '') {
+                // Use custom city if provided
+                city = customCity.value.trim().toLowerCase().replace(/\s+/g, '');
+            } else {
+                // Use selected city from dropdown
+                city = citySelect.value;
             }
             
-            let html = '<strong>📜 ইতিহাস (Recent):</strong> ';
-            recentProxies.forEach(proxy => {
-                html += `<span class="recent-item" onclick="useProxy('${proxy}')">${proxy.substring(0, 30)}...</span>`;
-            });
-            
-            container.innerHTML = html;
-        }
-        
-        // Select country
-        function selectCountry(code) {
-            selectedCountry = code;
-            renderCountryList();
-            renderCityList();
-            updateProxy();
-        }
-        
-        // Select city
-        function selectCity(city) {
-            selectedCity = city;
-            renderCityList();
-            updateProxy();
-        }
-        
-        // Update proxy
-        function updateProxy() {
-            const username = `${BASE_USERNAME_PREFIX}${selectedCountry}-region-${selectedCity}`;
+            const username = `${BASE_USERNAME_PREFIX}${country}-region-${city}`;
             const proxyString = `${BASE_HOST}:${BASE_PORT}:${username}:${BASE_PASSWORD}`;
-            document.getElementById('proxyOutput').textContent = proxyString;
+            proxyOutput.textContent = proxyString;
         }
         
-        // Copy proxy
+        // Copy proxy to clipboard
         function copyProxy() {
-            const proxyText = document.getElementById('proxyOutput').textContent;
+            const proxyText = proxyOutput.textContent;
             navigator.clipboard.writeText(proxyText).then(() => {
-                // Add to recent
-                recentProxies = [proxyText, ...recentProxies.filter(p => p !== proxyText)].slice(0, 10);
-                localStorage.setItem('recentProxies', JSON.stringify(recentProxies));
-                renderRecentList();
-                
-                alert('✅ প্রক্সি কপি করা হয়েছে!');
+                alert('✅ প্রক্সি কপি করা হয়েছে! \nProxy copied to clipboard!');
+            }).catch(err => {
+                alert('❌ কপি করতে সমস্যা হয়েছে');
             });
         }
         
-        // Set preset
+        // Set preset values
         function setPreset(country, city) {
-            selectedCountry = country;
-            selectedCity = city;
-            document.getElementById('countrySearch').value = '';
-            document.getElementById('citySearch').value = '';
-            renderCountryList();
-            renderCityList();
+            countrySelect.value = country;
+            
+            // Check if city exists in dropdown
+            const cityOption = Array.from(citySelect.options).find(opt => opt.value === city);
+            if (cityOption) {
+                citySelect.value = city;
+                customCity.value = '';
+            } else {
+                citySelect.value = 'ci'; // Default to all cities
+                customCity.value = city;
+            }
+            
             updateProxy();
         }
         
-        // Use proxy from recent
-        function useProxy(proxy) {
-            navigator.clipboard.writeText(proxy).then(() => {
-                alert('✅ প্রক্সি কপি করা হয়েছে!');
-            });
-        }
+        // Add event listeners
+        countrySelect.addEventListener('change', updateProxy);
+        citySelect.addEventListener('change', function() {
+            customCity.value = ''; // Clear custom city when dropdown is used
+            updateProxy();
+        });
+        customCity.addEventListener('input', updateProxy);
         
-        // Open in new tab (test proxy)
-        function openInNewTab() {
-            const proxy = document.getElementById('proxyOutput').textContent;
-            const [host, port, user, pass] = proxy.split(':');
-            window.open(`https://www.whatismyip.com`, '_blank');
-        }
-        
-        // Save to favorites
-        function saveToFavorites() {
-            const proxy = document.getElementById('proxyOutput').textContent;
-            let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
-            favorites = [proxy, ...favorites.filter(f => f !== proxy)].slice(0, 20);
-            localStorage.setItem('favorites', JSON.stringify(favorites));
-            alert('⭐ ফেভারিটে যোগ করা হয়েছে!');
-        }
-        
-        // Event listeners
-        document.getElementById('countrySearch').addEventListener('input', renderCountryList);
-        document.getElementById('citySearch').addEventListener('input', renderCityList);
-        
-        // Initialize
-        init();
+        // Initial update
+        updateProxy();
     </script>
+</body>
+</html>
 </body>
 </html>
